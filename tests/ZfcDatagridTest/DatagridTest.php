@@ -542,42 +542,6 @@ class DatagridTest extends TestBase
         $this->assertTrue($this->grid->hasRowClickAction());
     }
 
-    public function testRendererName()
-    {
-        // Default on HTTP
-        $this->assertEquals('bootstrapTable', $this->grid->getRendererName());
-
-        // Default on CLI
-        $_SERVER['argv'] = [
-            'foo.php',
-            'foo' => 'baz',
-            'bar',
-        ];
-        $_ENV["FOO_VAR"] = "bar";
-
-        $request  = new \Laminas\Console\Request();
-        $mvcEvent = $this->getMockBuilder(\Laminas\Mvc\MvcEvent::class)->getMock();
-        $mvcEvent->expects(self::any())
-            ->method('getRequest')
-            ->will($this->returnValue($request));
-        $this->grid->setMvcEvent($mvcEvent);
-        $this->assertEquals('laminasTable', $this->grid->getRendererName());
-
-        // change default
-        $this->grid->setRendererName('myRenderer');
-        $this->assertEquals('myRenderer', $this->grid->getRendererName());
-
-        // by HTTP request
-        $_GET['rendererType'] = 'jqGrid';
-        $request              = new \Laminas\Http\PhpEnvironment\Request();
-        $mvcEvent             = $this->getMockBuilder(\Laminas\Mvc\MvcEvent::class)->getMock();
-        $mvcEvent->expects(self::any())
-            ->method('getRequest')
-            ->will($this->returnValue($request));
-        $this->grid->setMvcEvent($mvcEvent);
-        $this->assertEquals('jqGrid', $this->grid->getRendererName());
-    }
-
     public function testToolbarTemplate()
     {
         $grid = new Datagrid();

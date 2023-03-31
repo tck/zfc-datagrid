@@ -33,7 +33,7 @@ class ButtonTest extends TestBase
         $this->assertEquals('My label', $button->getLabel());
 
         $html = '<a href="#" class="btn btn-default">My label</a>';
-        $this->assertEquals($html, $button->toHtml([]));
+        $this->assertEquals($html, $button->toHtml([], null));
     }
 
     public function testColumnLabelAndToHtml()
@@ -47,7 +47,7 @@ class ButtonTest extends TestBase
         $this->assertInstanceOf(\ZfcDatagrid\Column\AbstractColumn::class, $button->getLabel());
 
         $html = '<a href="#" class="btn btn-default">Blubb</a>';
-        $this->assertEquals($html, $button->toHtml(['myCol' => 'Blubb']));
+        $this->assertEquals($html, $button->toHtml(['myCol' => 'Blubb'], null));
     }
 
     public function testHtmlException()
@@ -55,7 +55,7 @@ class ButtonTest extends TestBase
         $button = new Button();
 
         $this->expectException(InvalidArgumentException::class);
-        $button->toHtml([]);
+        $button->toHtml([], null);
     }
 
     public function testGetHtmlTypeException(): void

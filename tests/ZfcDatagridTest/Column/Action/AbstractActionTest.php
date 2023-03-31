@@ -86,7 +86,7 @@ class AbstractActionTest extends TestCase
             ->method('getHtmlType')
             ->will($this->returnValue(''));
 
-        $this->assertEquals('<a href="#"></a>', $action->toHtml([]));
+        $this->assertEquals('<a href="#"></a>', $action->toHtml([], null));
     }
 
     public function testAttributes()

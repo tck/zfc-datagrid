@@ -47,7 +47,7 @@ class CheckboxTest extends TestBase
 
         $this->assertSame(
             '<input type="checkbox" name="rowSelections" value="foobar" title="foobar" />',
-            $this->getMethod('toHtml')->invokeArgs($this->getClass(), [['idConcated' => 'foobar']])
+            $this->getMethod('toHtml')->invokeArgs($this->getClass(), [['idConcated' => 'foobar'], null])
         );
     }
 }

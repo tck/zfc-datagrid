@@ -30,7 +30,7 @@ class IconTest extends TestCase
         $this->assertEquals('icon-add', $icon->getIconClass());
         $this->assertTrue($icon->hasIconClass());
 
-        $this->assertEquals('<a href="#"><i class="icon-add"></i></a>', $icon->toHtml([]));
+        $this->assertEquals('<a href="#"><i class="icon-add"></i></a>', $icon->toHtml([], null));
     }
 
     public function testIconLink()
@@ -43,7 +43,7 @@ class IconTest extends TestCase
         $this->assertEquals('/images/21/add.png', $icon->getIconLink());
         $this->assertTrue($icon->hasIconLink());
 
-        $this->assertEquals('<a href="#"><img src="/images/21/add.png" /></a>', $icon->toHtml([]));
+        $this->assertEquals('<a href="#"><img src="/images/21/add.png" /></a>', $icon->toHtml([], null));
     }
 
     public function testException()
@@ -51,6 +51,6 @@ class IconTest extends TestCase
         $icon = new Icon();
 
         $this->expectException(InvalidArgumentException::class);
-        $icon->toHtml([]);
+        $icon->toHtml([], null);
     }
 }

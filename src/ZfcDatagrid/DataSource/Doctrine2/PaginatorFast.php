@@ -60,7 +60,7 @@ class PaginatorFast implements AdapterInterface
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         if ($this->rowCount !== null) {
             return $this->rowCount;
