@@ -90,7 +90,7 @@ class Columns extends AbstractHelper
             if ($column->hasStyles()) {
                 foreach ($column->getStyles() as $style) {
                     /** @var Column\Style\Align $style */
-                    if (get_class($style) == Column\Style\Align::class) {
+                    if ($style::class == Column\Style\Align::class) {
                         $options['align'] = $style->getAlignment();
                         $alignAlreadyDefined = true;
                         break;
@@ -194,7 +194,7 @@ class Columns extends AbstractHelper
 
         $formatter .= implode(' ', $this->getStyles($column));
 
-        switch (get_class($column->getType())) {
+        switch ($column->getType()::class) {
             case Type\PhpArray::class:
                 $formatter .= 'cellvalue = \'<pre>\' + cellvalue.join(\'<br />\') + \'</pre>\';';
                 break;
@@ -235,25 +235,18 @@ class Columns extends AbstractHelper
             /* @var $style Column\Style\AbstractStyle */
             foreach ($style->getByValues() as $rule) {
                 $colString = $rule['column']->getUniqueId();
-                switch ($rule['operator']) {
-                    case Filter::EQUAL:
-                        $operator = '==';
-                        break;
-
-                    case Filter::NOT_EQUAL:
-                        $operator = '!=';
-                        break;
-
-                    default:
-                        throw new \Exception('Currently not supported filter operation: "' . $rule['operator'] . '"');
-                }
+                $operator = match ($rule['operator']) {
+                    Filter::EQUAL => '==',
+                    Filter::NOT_EQUAL => '!=',
+                    default => throw new \Exception('Currently not supported filter operation: "' . $rule['operator'] . '"'),
+                };
 
                 $prepend = 'if (rowObject.' . $colString . ' ' . $operator . ' \'' . $rule['value'] . '\') {';
                 $append .= '}';
             }
 
             $styleString = '';
-            switch (get_class($style)) {
+            switch ($style::class) {
                 case Column\Style\Bold::class:
                     $styleString = self::STYLE_BOLD;
                     break;
@@ -291,7 +284,7 @@ class Columns extends AbstractHelper
                     break;
 
                 default:
-                    throw new \Exception('Not defined style: "' . get_class($style) . '"');
+                    throw new \Exception('Not defined style: "' . $style::class . '"');
                     break;
             }
 

@@ -40,6 +40,7 @@ class Renderer extends AbstractRenderer
      *
      * @throws \Exception
      */
+    #[\Override]
     public function getRequest(): HttpRequest
     {
         $request = parent::getRequest();
@@ -59,6 +60,7 @@ class Renderer extends AbstractRenderer
      *
      * @throws \Exception
      */
+    #[\Override]
     public function getSortConditions(): array
     {
         if (!empty($this->sortConditions)) {
@@ -124,6 +126,7 @@ class Renderer extends AbstractRenderer
      *
      * @see \ZfcDatagrid\Renderer\AbstractRenderer::getFilters()
      */
+    #[\Override]
     public function getFilters(): array
     {
         if (!empty($this->filters)) {
@@ -168,6 +171,7 @@ class Renderer extends AbstractRenderer
      *
      * @throws \Exception
      */
+    #[\Override]
     public function getCurrentPageNumber(): int
     {
         $optionsRenderer = $this->getOptionsRenderer();
@@ -187,6 +191,7 @@ class Renderer extends AbstractRenderer
     /**
      * @param Datagrid $grid
      */
+    #[\Override]
     public function prepareViewModel(Datagrid $grid)
     {
         parent::prepareViewModel($grid);

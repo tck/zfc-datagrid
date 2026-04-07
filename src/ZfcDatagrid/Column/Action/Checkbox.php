@@ -27,6 +27,7 @@ class Checkbox extends AbstractAction
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function toHtml(array $row, ?TranslatorInterface $translator): string
     {
         $this->removeAttribute('name');

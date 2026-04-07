@@ -9,20 +9,16 @@ use function sprintf;
 
 class LaminasSelect extends AbstractDataSource
 {
-    /** @var Sql\Select */
-    private $select;
-
     /** @var Sql\Sql|null*/
     private $sqlObject;
 
     /**
      * Data source.
      *
-     * @param Sql\Select $data
+     * @param Sql\Select $select
      */
-    public function __construct(Sql\Select $data)
+    public function __construct(private readonly Sql\Select $select)
     {
-        $this->select = $data;
     }
 
     /**

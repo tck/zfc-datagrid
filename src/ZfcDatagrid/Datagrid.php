@@ -619,7 +619,7 @@ class Datagrid
      */
     private function createColumn(array $config): Column\AbstractColumn
     {
-        $colType = isset($config['colType']) ? $config['colType'] : 'Select';
+        $colType = $config['colType'] ?? 'Select';
         if (class_exists($colType, true)) {
             $class = $colType;
         } elseif (class_exists('ZfcDatagrid\\Column\\' . $colType, true)) {
@@ -628,13 +628,13 @@ class Datagrid
             throw new \InvalidArgumentException(sprintf('Column type: "%s" not found!', $colType));
         }
 
-        if ('ZfcDatagrid\\Column\\Select' == $class) {
+        if (\ZfcDatagrid\Column\Select::class == $class) {
             if (! isset($config['select']['column'])) {
                 throw new \InvalidArgumentException(
                     'For "ZfcDatagrid\Column\Select" the option select[column] must be defined!'
                 );
             }
-            $table = isset($config['select']['table']) ? $config['select']['table'] : null;
+            $table = $config['select']['table'] ?? null;
 
             $instance = new $class($config['select']['column'], $table);
         } else {
@@ -642,7 +642,7 @@ class Datagrid
         }
 
         foreach ($config as $key => $value) {
-            $method = 'set' . ucfirst($key);
+            $method = 'set' . ucfirst((string) $key);
             if (method_exists($instance, $method)) {
                 if (in_array($key, $this->specialMethods)) {
                     if (! is_array($value)) {
@@ -1028,7 +1028,7 @@ class Datagrid
                 $data = $data->getArrayCopy();
             } else {
                 if (is_object($data)) {
-                    $add = get_class($data);
+                    $add = $data::class;
                 } else {
                     $add = '[no object]';
                 }

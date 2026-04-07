@@ -243,11 +243,12 @@ class Number extends AbstractType
      *
      * @return string
      */
+    #[\Override]
     public function getFilterValue(string $val): string
     {
         $formatter = $this->getFormatter();
 
-        if (strlen($this->getPrefix()) > 0 && strpos($val, $this->getPrefix()) === 0) {
+        if (strlen($this->getPrefix()) > 0 && str_starts_with($val, $this->getPrefix())) {
             $val = substr($val, strlen($this->getPrefix()));
         }
         if (strlen($this->getSuffix()) > 0 && strpos($val, $this->getSuffix()) > 0) {
@@ -256,7 +257,7 @@ class Number extends AbstractType
 
         try {
             $formattedValue = $formatter->parse($val);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return $val;
         }
 
@@ -274,6 +275,7 @@ class Number extends AbstractType
      *
      * @return mixed
      */
+    #[\Override]
     public function getUserValue($val)
     {
         $formatter = $this->getFormatter();

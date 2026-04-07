@@ -11,16 +11,10 @@ use function str_replace;
 class Filter
 {
     /**
-     * @var QueryBuilder
-     */
-    private $qb;
-
-    /**
      * @param QueryBuilder $qb
      */
-    public function __construct(QueryBuilder $qb)
+    public function __construct(private readonly QueryBuilder $qb)
     {
-        $this->qb = $qb;
     }
 
     /**

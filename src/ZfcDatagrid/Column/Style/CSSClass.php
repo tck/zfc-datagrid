@@ -9,15 +9,11 @@ use function implode;
  */
 class CSSClass extends AbstractStyle
 {
-    /** @var array|string */
-    private $class;
-
     /**
      * @param string|array $class
      */
-    public function __construct($class)
+    public function __construct(private $class)
     {
-        $this->class = $class;
     }
 
     /**

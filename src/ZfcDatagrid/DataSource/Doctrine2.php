@@ -9,17 +9,13 @@ use ZfcDatagrid\DataSource\Doctrine2\Paginator as PaginatorAdapter;
 
 class Doctrine2 extends AbstractDataSource
 {
-    /** @var ORM\QueryBuilder */
-    private $qb;
-
     /**
      * Data source.
      *
-     * @param ORM\QueryBuilder $data
+     * @param ORM\QueryBuilder $qb
      */
-    public function __construct(ORM\QueryBuilder $data)
+    public function __construct(private readonly ORM\QueryBuilder $qb)
     {
-        $this->qb = $data;
     }
 
     /**

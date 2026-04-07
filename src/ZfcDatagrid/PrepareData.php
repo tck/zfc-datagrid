@@ -228,7 +228,7 @@ class PrepareData
                         }
                     });
                 } elseif (! is_object($row[$col->getUniqueId()])) {
-                    $row[$col->getUniqueId()] = trim($row[$col->getUniqueId()]);
+                    $row[$col->getUniqueId()] = trim((string) $row[$col->getUniqueId()]);
                 }
 
                 /*

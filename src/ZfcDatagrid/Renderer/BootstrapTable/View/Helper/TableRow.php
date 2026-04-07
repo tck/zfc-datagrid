@@ -97,7 +97,7 @@ class TableRow extends AbstractHelper
     public function __invoke(
         array $row,
         array $cols,
-        AbstractAction $rowClickAction = null,
+        ?AbstractAction $rowClickAction = null,
         array $rowStyles = [],
         bool $hasMassActions = false
     ): string {
@@ -158,7 +158,7 @@ class TableRow extends AbstractHelper
                 $classes[] = 'hidden';
             }
 
-            switch (get_class($col->getType())) {
+            switch ($col->getType()::class) {
                 case Column\Type\Number::class:
                     $cssStyles[] = 'text-align: right';
                     break;
@@ -172,7 +172,7 @@ class TableRow extends AbstractHelper
             foreach ($styles as $style) {
                 /* @var $style Column\Style\AbstractStyle */
                 if ($style->isApply($row) === true) {
-                    switch (get_class($style)) {
+                    switch ($style::class) {
                         case Column\Style\Bold::class:
                             $cssStyles[] = 'font-weight: bold';
                             break;
@@ -206,7 +206,7 @@ class TableRow extends AbstractHelper
                             break;
 
                         default:
-                            throw new \InvalidArgumentException('Not defined style: "' . get_class($style) . '"');
+                            throw new \InvalidArgumentException('Not defined style: "' . $style::class . '"');
                             break;
                     }
                 }

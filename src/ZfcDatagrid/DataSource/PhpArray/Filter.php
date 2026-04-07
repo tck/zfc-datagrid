@@ -6,16 +6,10 @@ use ZfcDatagrid\Filter as DatagridFilter;
 class Filter
 {
     /**
-     * @var DatagridFilter
-     */
-    private $filter;
-
-    /**
      * @param DatagridFilter $filter
      */
-    public function __construct(DatagridFilter $filter)
+    public function __construct(private readonly DatagridFilter $filter)
     {
-        $this->filter = $filter;
     }
 
     /**

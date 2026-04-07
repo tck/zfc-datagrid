@@ -15,7 +15,7 @@ abstract class AbstractDatagrid extends Datagrid implements FactoryInterface
      *
      * @return $this
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
     {
         $config = $container->get('config');
 
@@ -42,6 +42,7 @@ abstract class AbstractDatagrid extends Datagrid implements FactoryInterface
     /**
      * Call initGrid on rendering.
      */
+    #[\Override]
     public function render()
     {
         $this->initGrid();

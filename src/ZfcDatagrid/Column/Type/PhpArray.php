@@ -60,13 +60,14 @@ class PhpArray extends AbstractType
      *
      * @return mixed
      */
+    #[\Override]
     public function getUserValue($value)
     {
         if (! is_array($value)) {
             if ('' == $value) {
                 $value = [];
             } else {
-                $value = explode($this->getSeparator(), $value);
+                $value = explode($this->getSeparator(), (string) $value);
             }
         }
 

@@ -41,6 +41,7 @@ class Renderer extends AbstractRenderer
      *
      * @throws \Exception
      */
+    #[\Override]
     public function getRequest(): HttpRequest
     {
         $request = parent::getRequest();
@@ -60,6 +61,7 @@ class Renderer extends AbstractRenderer
      *
      * @throws \Exception
      */
+    #[\Override]
     public function getSortConditions(): array
     {
         if (!empty($this->sortConditions)) {
@@ -125,6 +127,7 @@ class Renderer extends AbstractRenderer
      *
      * @throws \Exception
      */
+    #[\Override]
     public function getFilters(): array
     {
         if (!empty($this->filters)) {
@@ -170,6 +173,7 @@ class Renderer extends AbstractRenderer
      * @return int
      * @throws \Exception
      */
+    #[\Override]
     public function getCurrentPageNumber(): int
     {
         $optionsRenderer = $this->getOptionsRenderer();
@@ -226,6 +230,7 @@ class Renderer extends AbstractRenderer
     /**
      * @return array
      */
+    #[\Override]
     public function getData(): array
     {
         $data = parent::getData();

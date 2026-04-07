@@ -29,6 +29,7 @@ class FileSize extends AbstractFormatter
     /**
      * @return bool
      */
+    #[\Override]
     public function isApply(): bool
     {
         return true;

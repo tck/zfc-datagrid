@@ -250,7 +250,7 @@ class Renderer extends AbstractExport
         foreach ($this->getColumnsToExport() as $col) {
             /* @var $col \ZfcDatagrid\Column\AbstractColumn */
 
-            switch (get_class($col->getType())) {
+            switch ($col->getType()::class) {
                 case Type\Image::class:
                     // "min" height for such a column
                     $height = $col->getType()->getResizeHeight() + $contentPadding;
@@ -326,8 +326,8 @@ class Renderer extends AbstractExport
             $pdf->setPage($currentPage);
             $x = $this->columnsPositionX[$col->getUniqueId()];
 
-            switch (get_class($col->getType())) {
-                case 'ZfcDatagrid\Column\Type\Image':
+            switch ($col->getType()::class) {
+                case \ZfcDatagrid\Column\Type\Image::class:
                     $text = '';
 
                     $link = K_BLANK_IMAGE;
@@ -345,7 +345,7 @@ class Renderer extends AbstractExport
                             // resizing properly to width + height (and keeping the ratio)
                             $file = file_get_contents($link);
                             if ($file !== false) {
-                                list($width, $height) = $this->calcImageSize(
+                                [$width, $height] = $this->calcImageSize(
                                     $file,
                                     $col->getWidth() - 2,
                                     $rowHeight - 2
@@ -387,7 +387,7 @@ class Renderer extends AbstractExport
             foreach ($styles as $style) {
                 /* @var $style Style\AbstractStyle */
                 if ($style->isApply($row) === true) {
-                    switch (get_class($style)) {
+                    switch ($style::class) {
                         case Style\Bold::class:
                             $this->setBold();
                             break;
@@ -435,7 +435,7 @@ class Renderer extends AbstractExport
                             break;
 
                         default:
-                            throw new \Exception('Not defined yet: "' . get_class($style) . '"');
+                            throw new \Exception('Not defined yet: "' . $style::class . '"');
                     }
                 }
             }
@@ -458,11 +458,11 @@ class Renderer extends AbstractExport
     {
         $pdf = $this->getPdf();
 
-        list($width, $height) = getimagesizefromstring($imageData);
+        [$width, $height] = getimagesizefromstring($imageData);
         $width                = $pdf->pixelsToUnits($width);
         $height               = $pdf->pixelsToUnits($height);
 
-        list($newWidth, $newHeight) = ImageResize::getCalculatedSize($width, $height, $maxWidth, $maxHeight);
+        [$newWidth, $newHeight] = ImageResize::getCalculatedSize($width, $height, $maxWidth, $maxHeight);
 
         return [
             $newWidth,

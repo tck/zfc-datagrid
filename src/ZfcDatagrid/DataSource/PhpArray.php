@@ -12,16 +12,13 @@ use function call_user_func_array;
 
 class PhpArray extends AbstractDataSource
 {
-    private $data = [];
-
     /**
      * Set the data source.
      *
      * @param array $data
      */
-    public function __construct(array $data)
+    public function __construct(private readonly array $data)
     {
-        $this->data = $data;
     }
 
     /**
@@ -116,7 +113,7 @@ class PhpArray extends AbstractDataSource
             $sortArray[] = $asc;
         }
 
-        switch (get_class($sortCondition['column']->getType())) {
+        switch ($sortCondition['column']->getType()::class) {
             case Column\Type\Number::class:
                 $numeric     = SORT_NUMERIC;
                 $sortArray[] = $numeric;
@@ -210,7 +207,7 @@ class PhpArray extends AbstractDataSource
             $sortArgs[$key] = &$value;
         }
 
-        call_user_func_array('array_multisort', $sortArgs);
+        call_user_func_array(array_multisort(...), $sortArgs);
 
         return end($args);
     }

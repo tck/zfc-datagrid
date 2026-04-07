@@ -16,7 +16,7 @@ class DatagridFactory implements FactoryInterface
      *
      * @return Datagrid
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): Datagrid
+    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null): Datagrid
     {
         $config = $container->get('config');
 

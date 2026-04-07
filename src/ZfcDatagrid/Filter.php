@@ -139,52 +139,52 @@ class Filter
         $operator = $defaultOperator;
         $value    = $inputFilterValue;
 
-        if (substr($inputFilterValue, 0, 2) == '=(') {
+        if (str_starts_with($inputFilterValue, '=(')) {
             $operator = self::IN;
             $value    = substr($inputFilterValue, 2);
-            if (substr($value, -1) == ')') {
+            if (str_ends_with($value, ')')) {
                 $value = substr($value, 0, -1);
             }
-        } elseif (substr($inputFilterValue, 0, 3) == '!=(') {
+        } elseif (str_starts_with($inputFilterValue, '!=(')) {
             $operator = self::NOT_IN;
             $value    = substr($inputFilterValue, 3);
-            if (substr($value, -1) == ')') {
+            if (str_ends_with($value, ')')) {
                 $value = substr($value, 0, -1);
             }
-        } elseif (substr($inputFilterValue, 0, 2) == '!=' ||
-            substr($inputFilterValue, 0, 2) == '<>'
+        } elseif (str_starts_with($inputFilterValue, '!=') ||
+            str_starts_with($inputFilterValue, '<>')
         ) {
             $operator = self::NOT_EQUAL;
             $value    = substr($inputFilterValue, 2);
-        } elseif (substr($inputFilterValue, 0, 2) == '!~' ||
-            substr($inputFilterValue, 0, 1) == '!'
+        } elseif (str_starts_with($inputFilterValue, '!~') ||
+            str_starts_with($inputFilterValue, '!')
         ) {
             // NOT LIKE or NOT EQUAL
-            if (substr($inputFilterValue, 0, 2) == '!~') {
+            if (str_starts_with($inputFilterValue, '!~')) {
                 $value = trim(substr($inputFilterValue, 2));
             } else {
                 $value = trim(substr($inputFilterValue, 1));
             }
 
-            if (substr($inputFilterValue, 0, 2) == '!~' ||
+            if (str_starts_with($inputFilterValue, '!~') ||
                 (
-                    substr($value, 0, 1) == '%' ||
-                    substr($value, -1) == '%' ||
-                    substr($value, 0, 1) == '*' ||
-                    substr($value, -1) == '*'
+                    str_starts_with($value, '%') ||
+                    str_ends_with($value, '%') ||
+                    str_starts_with($value, '*') ||
+                    str_ends_with($value, '*')
                 )
             ) {
                 // NOT LIKE
-                if ((substr($value, 0, 1) == '*' && substr($value, -1) == '*') ||
-                    (substr($value, 0, 1) == '%' && substr($value, -1) == '%')
+                if ((str_starts_with($value, '*') && str_ends_with($value, '*')) ||
+                    (str_starts_with($value, '%') && str_ends_with($value, '%'))
                 ) {
                     $operator = self::NOT_LIKE;
                     $value    = substr($value, 1);
                     $value    = substr($value, 0, -1);
-                } elseif (substr($value, 0, 1) == '*' || substr($value, 0, 1) == '%') {
+                } elseif (str_starts_with($value, '*') || str_starts_with($value, '%')) {
                     $operator = self::NOT_LIKE_LEFT;
                     $value    = substr($value, 1);
-                } elseif (substr($value, -1) == '*' || substr($value, -1) == '%') {
+                } elseif (str_ends_with($value, '*') || str_ends_with($value, '%')) {
                     $operator = self::NOT_LIKE_RIGHT;
                     $value    = substr($value, 0, -1);
                 } else {
@@ -194,52 +194,52 @@ class Filter
                 // NOT EQUAL
                 $operator = self::NOT_EQUAL;
             }
-        } elseif (substr($inputFilterValue, 0, 1) == '~' ||
-            substr($inputFilterValue, 0, 1) == '%' ||
-            substr($inputFilterValue, -1) == '%' ||
-            substr($inputFilterValue, 0, 1) == '*' ||
-            substr($inputFilterValue, -1) == '*'
+        } elseif (str_starts_with($inputFilterValue, '~') ||
+            str_starts_with($inputFilterValue, '%') ||
+            str_ends_with($inputFilterValue, '%') ||
+            str_starts_with($inputFilterValue, '*') ||
+            str_ends_with($inputFilterValue, '*')
         ) {
             // LIKE
-            if (substr($inputFilterValue, 0, 1) == '~') {
+            if (str_starts_with($inputFilterValue, '~')) {
                 $value = substr($inputFilterValue, 1);
             }
             $value = trim($value);
 
-            if ((substr($value, 0, 1) == '*' && substr($value, -1) == '*') ||
-                (substr($value, 0, 1) == '%' && substr($value, -1) == '%')
+            if ((str_starts_with($value, '*') && str_ends_with($value, '*')) ||
+                (str_starts_with($value, '%') && str_ends_with($value, '%'))
             ) {
                 $operator = self::LIKE;
                 $value    = substr($value, 1);
                 $value    = substr($value, 0, -1);
-            } elseif (substr($value, 0, 1) == '*' || substr($value, 0, 1) == '%') {
+            } elseif (str_starts_with($value, '*') || str_starts_with($value, '%')) {
                 $operator = self::LIKE_LEFT;
                 $value    = substr($value, 1);
-            } elseif (substr($value, -1) == '*' || substr($value, -1) == '%') {
+            } elseif (str_ends_with($value, '*') || str_ends_with($value, '%')) {
                 $operator = self::LIKE_RIGHT;
                 $value    = substr($value, 0, -1);
             } else {
                 $operator = self::LIKE;
             }
-        } elseif (substr($inputFilterValue, 0, 2) == '==') {
+        } elseif (str_starts_with($inputFilterValue, '==')) {
             $operator = self::EQUAL;
             $value    = substr($inputFilterValue, 2);
-        } elseif (substr($inputFilterValue, 0, 1) == '=') {
+        } elseif (str_starts_with($inputFilterValue, '=')) {
             $operator = self::EQUAL;
             $value    = substr($inputFilterValue, 1);
-        } elseif (substr($inputFilterValue, 0, 2) == '>=') {
+        } elseif (str_starts_with($inputFilterValue, '>=')) {
             $operator = self::GREATER_EQUAL;
             $value    = substr($inputFilterValue, 2);
-        } elseif (substr($inputFilterValue, 0, 1) == '>') {
+        } elseif (str_starts_with($inputFilterValue, '>')) {
             $operator = self::GREATER;
             $value    = substr($inputFilterValue, 1);
-        } elseif (substr($inputFilterValue, 0, 2) == '<=') {
+        } elseif (str_starts_with($inputFilterValue, '<=')) {
             $operator = self::LESS_EQUAL;
             $value    = substr($inputFilterValue, 2);
-        } elseif (substr($inputFilterValue, 0, 1) == '<') {
+        } elseif (str_starts_with($inputFilterValue, '<')) {
             $operator = self::LESS;
             $value    = substr($inputFilterValue, 1);
-        } elseif (strpos($inputFilterValue, '<>') !== false) {
+        } elseif (str_contains($inputFilterValue, '<>')) {
             $operator = self::BETWEEN;
             $value    = explode('<>', $inputFilterValue);
         }
@@ -349,7 +349,7 @@ class Filter
      */
     public static function isApply($currentValue, $expectedValue, string $operator = self::EQUAL): bool
     {
-        list($currentValue, $expectedValue) = self::convertValues($currentValue, $expectedValue, $operator);
+        [$currentValue, $expectedValue] = self::convertValues($currentValue, $expectedValue, $operator);
 
         switch ($operator) {
             case self::LIKE:

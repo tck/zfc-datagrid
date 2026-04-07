@@ -17,14 +17,10 @@ class Gravatar implements ObjectAwareInterface
      */
     private function setParameter(string $name, $value)
     {
-        switch ($name) {
-            case 'email':
-                $this->email = (string) $value;
-                break;
-
-            default:
-                throw new \InvalidArgumentException('Not allowed parameter: ' . $name);
-        }
+        $this->email = match ($name) {
+            'email' => (string) $value,
+            default => throw new \InvalidArgumentException('Not allowed parameter: ' . $name),
+        };
     }
 
     /**

@@ -78,6 +78,7 @@ class Button extends AbstractAction
      *
      * @return string
      */
+    #[\Override]
     public function toHtml(array $row, ?TranslatorInterface $translator): string
     {
         if ('' === $this->getLabel()) {

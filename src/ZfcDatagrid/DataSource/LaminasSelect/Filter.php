@@ -12,24 +12,12 @@ use function sprintf;
 class Filter
 {
     /**
-     * @var Sql
-     */
-    private $sql;
-
-    /**
-     * @var Select
-     */
-    private $select;
-
-    /**
      * Filter constructor.
      * @param Sql $sql
      * @param Select $select
      */
-    public function __construct(Sql $sql, Select $select)
+    public function __construct(private readonly Sql $sql, private readonly Select $select)
     {
-        $this->sql    = $sql;
-        $this->select = $select;
     }
 
     /**
@@ -59,9 +47,7 @@ class Filter
         $select = $this->getSelect();
 
         $adapter = $this->getSql()->getAdapter();
-        $qi      = function ($name) use ($adapter) {
-            return $adapter->getPlatform()->quoteIdentifier($name);
-        };
+        $qi      = (fn($name) => $adapter->getPlatform()->quoteIdentifier($name));
 
         $col = $filter->getColumn();
         if (! $col instanceof Column\Select) {
@@ -81,71 +67,30 @@ class Filter
         foreach ($values as $value) {
             $where = new Where();
 
-            switch ($filter->getOperator()) {
-                case DatagridFilter::LIKE:
-                    $wheres[] = $where->like($colString, '%' . $value . '%');
-                    break;
-
-                case DatagridFilter::LIKE_LEFT:
-                    $wheres[] = $where->like($colString, '%' . $value);
-                    break;
-
-                case DatagridFilter::LIKE_RIGHT:
-                    $wheres[] = $where->like($colString, $value . '%');
-                    break;
-
-                case DatagridFilter::NOT_LIKE:
-                    $wheres[] = $where->literal($qi($colString) . 'NOT LIKE ?', [
-                        '%' . $value . '%',
-                    ]);
-                    break;
-
-                case DatagridFilter::NOT_LIKE_LEFT:
-                    $wheres[] = $where->literal($qi($colString) . 'NOT LIKE ?', [
-                        '%' . $value,
-                    ]);
-                    break;
-
-                case DatagridFilter::NOT_LIKE_RIGHT:
-                    $wheres[] = $where->literal($qi($colString) . 'NOT LIKE ?', [
-                        $value . '%',
-                    ]);
-                    break;
-
-                case DatagridFilter::EQUAL:
-                    $wheres[] = $where->equalTo($colString, $value);
-                    break;
-
-                case DatagridFilter::NOT_EQUAL:
-                    $wheres[] = $where->notEqualTo($colString, $value);
-                    break;
-
-                case DatagridFilter::GREATER_EQUAL:
-                    $wheres[] = $where->greaterThanOrEqualTo($colString, $value);
-                    break;
-
-                case DatagridFilter::GREATER:
-                    $wheres[] = $where->greaterThan($colString, $value);
-                    break;
-
-                case DatagridFilter::LESS_EQUAL:
-                    $wheres[] = $where->lessThanOrEqualTo($colString, $value);
-                    break;
-
-                case DatagridFilter::LESS:
-                    $wheres[] = $where->lessThan($colString, $value);
-                    break;
-
-                case DatagridFilter::BETWEEN:
-                    $wheres[] = $where->between($colString, $values[0], $values[1]);
-                    break 2;
-
-                default:
-                    throw new \InvalidArgumentException(
-                        'This operator is currently not supported: ' . $filter->getOperator()
-                    );
-                    break;
-            }
+            $wheres[] = match ($filter->getOperator()) {
+                DatagridFilter::LIKE => $where->like($colString, '%' . $value . '%'),
+                DatagridFilter::LIKE_LEFT => $where->like($colString, '%' . $value),
+                DatagridFilter::LIKE_RIGHT => $where->like($colString, $value . '%'),
+                DatagridFilter::NOT_LIKE => $where->literal($qi($colString) . 'NOT LIKE ?', [
+                    '%' . $value . '%',
+                ]),
+                DatagridFilter::NOT_LIKE_LEFT => $where->literal($qi($colString) . 'NOT LIKE ?', [
+                    '%' . $value,
+                ]),
+                DatagridFilter::NOT_LIKE_RIGHT => $where->literal($qi($colString) . 'NOT LIKE ?', [
+                    $value . '%',
+                ]),
+                DatagridFilter::EQUAL => $where->equalTo($colString, $value),
+                DatagridFilter::NOT_EQUAL => $where->notEqualTo($colString, $value),
+                DatagridFilter::GREATER_EQUAL => $where->greaterThanOrEqualTo($colString, $value),
+                DatagridFilter::GREATER => $where->greaterThan($colString, $value),
+                DatagridFilter::LESS_EQUAL => $where->lessThanOrEqualTo($colString, $value),
+                DatagridFilter::LESS => $where->lessThan($colString, $value),
+                DatagridFilter::BETWEEN => $where->between($colString, $values[0], $values[1]),
+                default => throw new \InvalidArgumentException(
+                    'This operator is currently not supported: ' . $filter->getOperator()
+                ),
+            };
         }
 
         if (! empty($wheres)) {

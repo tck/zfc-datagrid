@@ -80,7 +80,7 @@ class Renderer extends AbstractExport
             foreach ($this->getColumnsToExport() as $col) {
                 $header[] = $this->translate($col->getLabel());
             }
-            fputcsv($fp, $header, $delimiter, $enclosure);
+            fputcsv($fp, $header, $delimiter, $enclosure, escape: '\\');
         }
 
         // data
@@ -95,7 +95,7 @@ class Renderer extends AbstractExport
 
                 $csvRow[] = $value;
             }
-            fputcsv($fp, $csvRow, $delimiter, $enclosure);
+            fputcsv($fp, $csvRow, $delimiter, $enclosure, escape: '\\');
         }
         fclose($fp);
 

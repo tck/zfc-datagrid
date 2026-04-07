@@ -261,6 +261,7 @@ class DateTime extends AbstractType
      *
      * @return string
      */
+    #[\Override]
     public function getFilterValue(string $val): string
     {
         $formatter = new IntlDateFormatter(
@@ -287,6 +288,7 @@ class DateTime extends AbstractType
      *
      * @return mixed
      */
+    #[\Override]
     public function getUserValue($val)
     {
         if ('' == $val) {

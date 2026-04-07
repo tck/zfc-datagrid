@@ -47,7 +47,7 @@ abstract class AbstractExport extends AbstractRenderer
 
             if (! $column instanceof Column\Action &&
                 $column->isHidden() === false &&
-                in_array(get_class($column->getType()), $this->allowedColumnTypes)
+                in_array($column->getType()::class, $this->allowedColumnTypes)
             ) {
                 $columnsToExport[] = $column;
             }
@@ -75,12 +75,12 @@ abstract class AbstractExport extends AbstractRenderer
         $papersize   = $optionsRenderer['papersize'];
         $orientation = $optionsRenderer['orientation'];
 
-        if (substr($papersize, 0, 1) != 'A') {
+        if (!str_starts_with((string) $papersize, 'A')) {
             throw new \Exception('Currently only "A" paper formats are supported!');
         }
 
         // calc from A0 to selected
-        $divisor = substr($papersize, 1, 1);
+        $divisor = substr((string) $papersize, 1, 1);
 
         // A0 dimensions = 841 x 1189 mm
         $currentX = 841;

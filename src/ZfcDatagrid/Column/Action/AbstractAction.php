@@ -112,12 +112,12 @@ abstract class AbstractAction
         $link = $this->getLink();
 
         // Replace placeholders
-        if (strpos($this->getLink(), self::ROW_ID_PLACEHOLDER) !== false) {
+        if (str_contains($this->getLink(), self::ROW_ID_PLACEHOLDER)) {
             $link = str_replace(self::ROW_ID_PLACEHOLDER, urlencode($row['idConcated'] ?? ''), $link);
         }
 
         foreach ($this->getLinkColumnPlaceholders() as $col) {
-            $link = str_replace(':' . $col->getUniqueId() . ':', urlencode($row[$col->getUniqueId()]), $link);
+            $link = str_replace(':' . $col->getUniqueId() . ':', urlencode((string) $row[$col->getUniqueId()]), $link);
         }
 
         return $link;

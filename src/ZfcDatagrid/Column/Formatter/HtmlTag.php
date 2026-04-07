@@ -286,12 +286,12 @@ class HtmlTag extends AbstractFormatter implements RouterInterface
         }
 
         // Replace placeholders
-        if (strpos($link, self::ROW_ID_PLACEHOLDER) !== false) {
+        if (str_contains($link, self::ROW_ID_PLACEHOLDER)) {
             $link = str_replace(self::ROW_ID_PLACEHOLDER, rawurlencode($row['idConcated'] ?? ''), $link);
         }
 
         foreach ($this->getLinkColumnPlaceholders() as $col) {
-            $link = str_replace(':' . $col->getUniqueId() . ':', rawurlencode($row[$col->getUniqueId()]), $link);
+            $link = str_replace(':' . $col->getUniqueId() . ':', rawurlencode((string) $row[$col->getUniqueId()]), $link);
         }
 
         return $link;

@@ -475,7 +475,7 @@ abstract class AbstractColumn
      *
      * @return $this
      */
-    public function  setFilterSelectOptions(array $options = null, bool $noSelect = true): self
+    public function  setFilterSelectOptions(?array $options = null, bool $noSelect = true): self
     {
         // This work also with options with integer based array index such as
         // array(0 => 'zero', 1 => 'once', 2 => 'double', 3 => 'triple'....)

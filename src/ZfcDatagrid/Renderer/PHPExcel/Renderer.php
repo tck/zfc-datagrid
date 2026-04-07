@@ -117,7 +117,7 @@ class Renderer extends AbstractExport
                 $currentColumn = Cell\Coordinate::stringFromColumnIndex($xColumn);
                 $cell          = $sheet->getCell($currentColumn . $yRow);
 
-                switch (get_class($col->getType())) {
+                switch ($col->getType()::class) {
                     case Column\Type\Number::class:
                         $cell->setValueExplicit($value, Cell\DataType::TYPE_NUMERIC);
                         break;
@@ -165,7 +165,7 @@ class Renderer extends AbstractExport
                 foreach ($styles as $style) {
                     /* @var $style Column\Style\AbstractStyle */
                     if ($style->isApply($row) === true) {
-                        switch (get_class($style)) {
+                        switch ($style::class) {
                             case Column\Style\Bold::class:
                                 $columnStyle->getFont()->setBold(true);
                                 break;
@@ -229,7 +229,7 @@ class Renderer extends AbstractExport
                                 break;
 
                             default:
-                                throw new \Exception('Not defined yet: "' . get_class($style) . '"');
+                                throw new \Exception('Not defined yet: "' . $style::class . '"');
                         }
                     }
                 }
